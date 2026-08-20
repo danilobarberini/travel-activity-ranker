@@ -1,0 +1,55 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type ActivityScoreType {
+  activity: ActivityType!
+  reasoning: [String!]!
+  score: Int
+}
+
+"""An activity that gets ranked for a given day."""
+enum ActivityType {
+  INDOOR_SIGHTSEEING
+  OUTDOOR_SIGHTSEEING
+  SKIING
+  SURFING
+}
+
+type CityForecastType {
+  days: [DayForecastType!]!
+  location: LocationType!
+}
+
+type DailyWeatherType {
+  date: String!
+  precipitationSumMm: Float!
+  snowfallSumCm: Float!
+  sunshineDurationSeconds: Float!
+  temperatureMaxC: Float!
+  temperatureMinC: Float!
+  uvIndexMax: Float!
+  waveHeightMaxM: Float
+  wavePeriodMaxS: Float
+  weatherCode: Int!
+  windSpeedMaxKmh: Float!
+  windWaveHeightMaxM: Float
+}
+
+type DayForecastType {
+  activities: [ActivityScoreType!]!
+  date: String!
+  weather: DailyWeatherType!
+}
+
+type LocationType {
+  admin1: String
+  country: String
+  latitude: Float!
+  longitude: Float!
+  name: String!
+}
+
+type Query {
+  cityForecast(location: String!): CityForecastType!
+}
