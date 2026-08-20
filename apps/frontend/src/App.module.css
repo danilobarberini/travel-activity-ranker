@@ -1,0 +1,33 @@
+.app {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+
+.subtitle {
+  color: var(--color-text-muted);
+  font-size: 15px;
+}
+
+.status {
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: 32px 0;
+}
+
+.errorMessage {
+  text-align: center;
+  color: var(--color-poor-text);
+  background: var(--color-poor-bg);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
