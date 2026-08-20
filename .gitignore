@@ -16,3 +16,6 @@ npm-debug.log*
 
 .DS_Store
 Thumbs.db
+
+# Local-only API scratch requests (Bruno) — not part of the deliverable
+bruno/
