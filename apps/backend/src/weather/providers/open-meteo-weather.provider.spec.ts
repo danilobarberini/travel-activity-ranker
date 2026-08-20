@@ -1,5 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { HttpService } from '@nestjs/axios';
+import { BadGatewayException } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 import { of } from 'rxjs';
 import { OpenMeteoWeatherProvider } from './open-meteo-weather.provider';
@@ -13,6 +14,29 @@ function mockAxiosResponse<T>(data: T): AxiosResponse<T> {
     config: {} as AxiosResponse['config'],
   };
 }
+
+const VALID_MARINE_RESPONSE = {
+  daily: {
+    time: ['2026-08-20'],
+    wave_height_max: [0.5],
+    wave_period_max: [6],
+    wind_wave_height_max: [0.2],
+  },
+};
+
+const VALID_FORECAST_RESPONSE = {
+  daily: {
+    time: ['2026-08-20'],
+    temperature_2m_max: [24],
+    temperature_2m_min: [18],
+    precipitation_sum: [0],
+    snowfall_sum: [0],
+    wind_speed_10m_max: [12],
+    weather_code: [1],
+    sunshine_duration: [30000],
+    uv_index_max: [6],
+  },
+};
 
 describe('OpenMeteoWeatherProvider', () => {
   let provider: OpenMeteoWeatherProvider;
@@ -171,5 +195,65 @@ describe('OpenMeteoWeatherProvider', () => {
 
     expect(result[0].waveHeightMaxM).toBe(0.5);
     expect(result[1].waveHeightMaxM).toBeNull();
+  });
+
+  it('throws a clear error instead of crashing when the forecast response has no "daily" block', async () => {
+    httpGetMock
+      .mockReturnValueOnce(of(mockAxiosResponse({})))
+      .mockReturnValueOnce(of(mockAxiosResponse(VALID_MARINE_RESPONSE)));
+
+    await expect(
+      provider.getDailyForecast(-27.5954, -48.548, 1),
+    ).rejects.toThrow(BadGatewayException);
+  });
+
+  it('throws a clear error instead of silently truncating when a forecast series is shorter than "time"', async () => {
+    httpGetMock
+      .mockReturnValueOnce(
+        of(
+          mockAxiosResponse({
+            daily: {
+              ...VALID_FORECAST_RESPONSE.daily,
+              time: ['2026-08-20', '2026-08-21'],
+              // temperature_2m_max intentionally left with only 1 entry for 2 days
+              temperature_2m_max: [24],
+            },
+          }),
+        ),
+      )
+      .mockReturnValueOnce(of(mockAxiosResponse(VALID_MARINE_RESPONSE)));
+
+    await expect(
+      provider.getDailyForecast(-27.5954, -48.548, 2),
+    ).rejects.toThrow(BadGatewayException);
+  });
+
+  it('throws a clear error instead of returning a bogus number when a forecast value is null', async () => {
+    httpGetMock
+      .mockReturnValueOnce(
+        of(
+          mockAxiosResponse({
+            daily: {
+              ...VALID_FORECAST_RESPONSE.daily,
+              temperature_2m_max: [null],
+            },
+          }),
+        ),
+      )
+      .mockReturnValueOnce(of(mockAxiosResponse(VALID_MARINE_RESPONSE)));
+
+    await expect(
+      provider.getDailyForecast(-27.5954, -48.548, 1),
+    ).rejects.toThrow(BadGatewayException);
+  });
+
+  it('throws a clear error instead of crashing when the marine response has no "daily" block', async () => {
+    httpGetMock
+      .mockReturnValueOnce(of(mockAxiosResponse(VALID_FORECAST_RESPONSE)))
+      .mockReturnValueOnce(of(mockAxiosResponse({})));
+
+    await expect(
+      provider.getDailyForecast(-27.5954, -48.548, 1),
+    ).rejects.toThrow(BadGatewayException);
   });
 });
