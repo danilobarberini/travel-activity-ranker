@@ -1,11 +1,26 @@
+import { join } from 'node:path';
 import { Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { WeatherModule } from './weather/weather.module';
 import { ScoringModule } from './scoring/scoring.module';
+import { ForecastModule } from './forecast/forecast.module';
+import { formatGraphQLError } from './common/graphql-error-formatter';
 
 @Module({
-  imports: [WeatherModule, ScoringModule],
+  imports: [
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'schema.gql'),
+      sortSchema: true,
+      formatError: formatGraphQLError,
+    }),
+    WeatherModule,
+    ScoringModule,
+    ForecastModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
