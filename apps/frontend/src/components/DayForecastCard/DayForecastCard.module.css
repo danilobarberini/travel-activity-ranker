@@ -1,0 +1,38 @@
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 16px;
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.date {
+  font-size: 16px;
+  text-transform: capitalize;
+}
+
+.weatherSummary {
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.activitiesGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+@media (max-width: 640px) {
+  .activitiesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

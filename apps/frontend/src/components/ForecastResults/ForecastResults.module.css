@@ -1,0 +1,14 @@
+.results {
+  display: flex;
+  flex-direction: column;
+}
+
+.locationHeader {
+  margin-bottom: 16px;
+}
+
+.daysList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

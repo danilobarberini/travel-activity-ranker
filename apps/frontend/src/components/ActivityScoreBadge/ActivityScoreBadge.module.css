@@ -1,0 +1,59 @@
+.badge {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  min-width: 0;
+}
+
+.activityName {
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0.85;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scoreRow {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.scoreValue {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.tierLabel {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.excellent {
+  background: var(--color-excellent-bg);
+  color: var(--color-excellent-text);
+}
+
+.good {
+  background: var(--color-good-bg);
+  color: var(--color-good-text);
+}
+
+.fair {
+  background: var(--color-fair-bg);
+  color: var(--color-fair-text);
+}
+
+.poor {
+  background: var(--color-poor-bg);
+  color: var(--color-poor-text);
+}
+
+.unavailable {
+  background: var(--color-unavailable-bg);
+  color: var(--color-unavailable-text);
+}
