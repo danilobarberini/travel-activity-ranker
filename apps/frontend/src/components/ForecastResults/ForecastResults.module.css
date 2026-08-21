@@ -9,6 +9,13 @@
 
 .daysList {
   display: flex;
-  flex-direction: column;
   gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  cursor: grab;
+  user-select: none;
+}
+
+.daysList:active {
+  cursor: grabbing;
 }

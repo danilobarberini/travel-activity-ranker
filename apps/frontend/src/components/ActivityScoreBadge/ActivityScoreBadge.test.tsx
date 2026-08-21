@@ -29,4 +29,32 @@ describe('ActivityScoreBadge', () => {
     expect(screen.getByText('—')).toBeInTheDocument();
     expect(screen.getByText('Sem dados')).toBeInTheDocument();
   });
+
+  it('exposes the reasoning through an info button instead of a hover-only title', () => {
+    render(
+      <ActivityScoreBadge
+        activity="SURFING"
+        score={85}
+        reasoning={['Boa ondulação (1.2m)']}
+      />,
+    );
+
+    const infoButton = screen.getByRole('button', {
+      name: /por que essa nota/i,
+    });
+    const describedById = infoButton.getAttribute('aria-describedby');
+
+    expect(describedById).toBeTruthy();
+    expect(document.getElementById(describedById!)).toHaveTextContent(
+      'Boa ondulação (1.2m)',
+    );
+  });
+
+  it('renders no info button when there is no reasoning', () => {
+    render(<ActivityScoreBadge activity="SURFING" score={85} reasoning={[]} />);
+
+    expect(
+      screen.queryByRole('button', { name: /por que essa nota/i }),
+    ).not.toBeInTheDocument();
+  });
 });

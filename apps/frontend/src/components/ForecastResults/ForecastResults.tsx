@@ -1,5 +1,5 @@
-import { BestDaySummary } from '../BestDaySummary/BestDaySummary';
 import { DayForecastCard } from '../DayForecastCard/DayForecastCard';
+import { useDragScroll } from '../../hooks/useDragScroll';
 import type { CityForecastQuery } from '../../graphql/generated/graphql';
 import styles from './ForecastResults.module.css';
 
@@ -9,6 +9,7 @@ interface ForecastResultsProps {
 
 export function ForecastResults({ forecast }: ForecastResultsProps) {
   const { location, days } = forecast;
+  const dragScrollRef = useDragScroll<HTMLDivElement>();
 
   return (
     <section className={styles.results}>
@@ -19,9 +20,7 @@ export function ForecastResults({ forecast }: ForecastResultsProps) {
         </h2>
       </header>
 
-      <BestDaySummary days={days} />
-
-      <div className={styles.daysList}>
+      <div className={styles.daysList} ref={dragScrollRef}>
         {days.map((day) => (
           <DayForecastCard
             key={day.date}
@@ -29,6 +28,7 @@ export function ForecastResults({ forecast }: ForecastResultsProps) {
             temperatureMaxC={day.weather.temperatureMaxC}
             temperatureMinC={day.weather.temperatureMinC}
             precipitationSumMm={day.weather.precipitationSumMm}
+            snowfallSumCm={day.weather.snowfallSumCm}
             activities={day.activities}
           />
         ))}
