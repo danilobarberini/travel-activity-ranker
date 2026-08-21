@@ -1,8 +1,8 @@
 import type { ActivityType } from '../graphql/generated/graphql';
 
 export const ACTIVITY_LABELS: Record<ActivityType, string> = {
-  SKIING: 'Esqui',
-  SURFING: 'Surf',
-  OUTDOOR_SIGHTSEEING: 'Passeios ao ar livre',
-  INDOOR_SIGHTSEEING: 'Passeios indoor',
+  SKIING: 'Skiing',
+  SURFING: 'Surfing',
+  OUTDOOR_SIGHTSEEING: 'Outdoor sightseeing',
+  INDOOR_SIGHTSEEING: 'Indoor sightseeing',
 };

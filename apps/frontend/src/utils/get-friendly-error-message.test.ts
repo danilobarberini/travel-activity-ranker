@@ -6,25 +6,23 @@ describe('getFriendlyErrorMessage', () => {
   it('passes through the backend-provided message for a GraphQL-level error', () => {
     const error = new CombinedGraphQLErrors({
       data: null,
-      errors: [{ message: 'Nenhuma cidade encontrada para "asdkjf".' }],
+      errors: [{ message: 'No city found for "asdkjf".' }],
     });
 
-    expect(getFriendlyErrorMessage(error)).toBe(
-      'Nenhuma cidade encontrada para "asdkjf".',
-    );
+    expect(getFriendlyErrorMessage(error)).toBe('No city found for "asdkjf".');
   });
 
   it('hides the raw network error behind a friendly generic message', () => {
     const networkError = new TypeError('Failed to fetch');
 
     expect(getFriendlyErrorMessage(networkError)).toBe(
-      'Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.',
+      'Could not connect to the server. Check your connection and try again.',
     );
   });
 
   it('falls back to the generic message for anything unrecognized', () => {
     expect(getFriendlyErrorMessage('a plain string, not an error object')).toBe(
-      'Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.',
+      'Could not connect to the server. Check your connection and try again.',
     );
   });
 });

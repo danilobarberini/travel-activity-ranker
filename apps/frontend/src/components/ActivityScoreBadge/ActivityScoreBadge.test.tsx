@@ -8,13 +8,13 @@ describe('ActivityScoreBadge', () => {
       <ActivityScoreBadge
         activity="SURFING"
         score={85}
-        reasoning={['Boa ondulação (1.2m)']}
+        reasoning={['Good swell (1.2m)']}
       />,
     );
 
-    expect(screen.getByText('Surf')).toBeInTheDocument();
+    expect(screen.getByText('Surfing')).toBeInTheDocument();
     expect(screen.getByText('85')).toBeInTheDocument();
-    expect(screen.getByText('Ótimo')).toBeInTheDocument();
+    expect(screen.getByText('Excellent')).toBeInTheDocument();
   });
 
   it('renders a dash instead of a fabricated number when score is null', () => {
@@ -22,12 +22,12 @@ describe('ActivityScoreBadge', () => {
       <ActivityScoreBadge
         activity="SURFING"
         score={null}
-        reasoning={['Sem dados de ondas disponíveis']}
+        reasoning={['No wave data available']}
       />,
     );
 
     expect(screen.getByText('—')).toBeInTheDocument();
-    expect(screen.getByText('Sem dados')).toBeInTheDocument();
+    expect(screen.getByText('No data')).toBeInTheDocument();
   });
 
   it('exposes the reasoning through an info button instead of a hover-only title', () => {
@@ -35,18 +35,18 @@ describe('ActivityScoreBadge', () => {
       <ActivityScoreBadge
         activity="SURFING"
         score={85}
-        reasoning={['Boa ondulação (1.2m)']}
+        reasoning={['Good swell (1.2m)']}
       />,
     );
 
     const infoButton = screen.getByRole('button', {
-      name: /por que essa nota/i,
+      name: /why this score/i,
     });
     const describedById = infoButton.getAttribute('aria-describedby');
 
     expect(describedById).toBeTruthy();
     expect(document.getElementById(describedById!)).toHaveTextContent(
-      'Boa ondulação (1.2m)',
+      'Good swell (1.2m)',
     );
   });
 
@@ -54,7 +54,7 @@ describe('ActivityScoreBadge', () => {
     render(<ActivityScoreBadge activity="SURFING" score={85} reasoning={[]} />);
 
     expect(
-      screen.queryByRole('button', { name: /por que essa nota/i }),
+      screen.queryByRole('button', { name: /why this score/i }),
     ).not.toBeInTheDocument();
   });
 });

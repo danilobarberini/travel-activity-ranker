@@ -64,7 +64,7 @@ describe('ForecastResolver', () => {
           {
             activity: ActivityType.SURFING,
             score: 80,
-            reasoning: ['boa ondulação'],
+            reasoning: ['good swell'],
           },
         ],
       },

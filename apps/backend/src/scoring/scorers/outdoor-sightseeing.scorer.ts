@@ -30,10 +30,10 @@ export class OutdoorSightseeingScorer implements ActivityScorer {
 
     if (day.precipitationSumMm > HEAVY_RAIN_MM) {
       score -= 50;
-      reasoning.push(`Chuva forte prevista (${day.precipitationSumMm}mm)`);
+      reasoning.push(`Heavy rain expected (${day.precipitationSumMm}mm)`);
     } else if (day.precipitationSumMm > LIGHT_RAIN_MM) {
       score -= 20;
-      reasoning.push(`Alguma chuva prevista (${day.precipitationSumMm}mm)`);
+      reasoning.push(`Some rain expected (${day.precipitationSumMm}mm)`);
     }
 
     if (
@@ -41,22 +41,22 @@ export class OutdoorSightseeingScorer implements ActivityScorer {
       day.temperatureMinC < EXTREME_COLD_C
     ) {
       score -= 30;
-      reasoning.push('Temperatura extrema');
+      reasoning.push('Extreme temperature');
     } else if (day.temperatureMaxC > WARM_C || day.temperatureMinC < COOL_C) {
       score -= 10;
-      reasoning.push('Temperatura um pouco fora do ideal');
+      reasoning.push('Temperature a bit outside the ideal range');
     }
 
     if (day.windSpeedMaxKmh > STRONG_WIND_KMH) {
       score -= 20;
-      reasoning.push(`Vento forte (${day.windSpeedMaxKmh} km/h)`);
+      reasoning.push(`Strong wind (${day.windSpeedMaxKmh} km/h)`);
     }
 
     if (day.sunshineDurationSeconds > HIGH_SUNSHINE_SECONDS) {
-      reasoning.push('Bastante sol ao longo do dia');
+      reasoning.push('Plenty of sunshine throughout the day');
     } else if (day.sunshineDurationSeconds < LOW_SUNSHINE_SECONDS) {
       score -= 10;
-      reasoning.push('Pouco sol, dia mais nublado');
+      reasoning.push('Little sunshine, cloudier day');
     }
 
     return { score: clampScore(score), reasoning };

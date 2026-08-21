@@ -59,13 +59,13 @@ describe('Forecast GraphQL (integration)', () => {
 
   const fakeLocationProvider: LocationProvider = {
     findByName: (query: string) => {
-      if (query === 'Cidade Inexistente') {
+      if (query === 'Nonexistent City') {
         return Promise.resolve([]);
       }
       return Promise.resolve([
         {
-          name: 'Cidade Teste',
-          country: 'Brasil',
+          name: 'Test City',
+          country: 'Brazil',
           admin1: null,
           latitude: -27.5954,
           longitude: -48.548,
@@ -117,8 +117,8 @@ describe('Forecast GraphQL (integration)', () => {
         const body = res.body as CityForecastResponseBody;
         const forecast = body.data?.cityForecast;
         expect(forecast?.location).toEqual({
-          name: 'Cidade Teste',
-          country: 'Brasil',
+          name: 'Test City',
+          country: 'Brazil',
         });
         expect(forecast?.days).toHaveLength(1);
         const activities = forecast?.days[0].activities ?? [];
@@ -137,7 +137,7 @@ describe('Forecast GraphQL (integration)', () => {
   it('returns a NOT_FOUND error with no leaked stacktrace when the city cannot be resolved', () => {
     const query = `
       query {
-        cityForecast(location: "Cidade Inexistente") {
+        cityForecast(location: "Nonexistent City") {
           location { name }
         }
       }

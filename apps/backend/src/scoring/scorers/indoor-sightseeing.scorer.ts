@@ -26,16 +26,18 @@ export class IndoorSightseeingScorer implements ActivityScorer {
     // rainy day, but a severe storm is a bad day for every activity, indoor included
     // High stable baseline, only extreme weather deducts.
     let score = BASELINE_SCORE;
-    const reasoning: string[] = ['Passeios indoor dependem pouco do clima'];
+    const reasoning: string[] = [
+      'Indoor activities depend little on the weather',
+    ];
 
     if (
       day.precipitationSumMm > SEVERE_RAIN_MM ||
       day.windSpeedMaxKmh > SEVERE_WIND_KMH
     ) {
       score -= 30;
-      reasoning.push('Clima severo pode dificultar o deslocamento até o local');
+      reasoning.push('Severe weather can make getting there difficult');
     } else if (day.precipitationSumMm > NOTABLE_RAIN_MM) {
-      reasoning.push('Boa opção para fugir da chuva');
+      reasoning.push('Good option to escape the rain');
     }
 
     if (
@@ -43,7 +45,7 @@ export class IndoorSightseeingScorer implements ActivityScorer {
       day.temperatureMinC < EXTREME_COLD_C
     ) {
       score -= 15;
-      reasoning.push('Temperatura extrema pode tornar o trajeto desagradável');
+      reasoning.push('Extreme temperature can make the trip unpleasant');
     }
 
     return { score: clampScore(score), reasoning };

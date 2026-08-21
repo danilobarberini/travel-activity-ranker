@@ -14,8 +14,8 @@ function App() {
       <header className={styles.hero}>
         <h1>Travel Activity Ranker</h1>
         <p className={styles.subtitle}>
-          Digite uma cidade e veja o ranking de esqui, surf e passeios pros
-          próximos 7 dias.
+          Enter a city and see the ranking for skiing, surfing, and sightseeing
+          for the next 7 days.
         </p>
       </header>
 
@@ -24,7 +24,7 @@ function App() {
       <main>
         {loading && (
           <p role="status" className={styles.status}>
-            Buscando previsão…
+            Loading forecast…
           </p>
         )}
 
@@ -35,7 +35,7 @@ function App() {
         )}
 
         {!loading && !error && !forecast && searchedCity === null && (
-          <p className={styles.status}>Busque uma cidade pra ver o ranking.</p>
+          <p className={styles.status}>Search a city to see the ranking.</p>
         )}
 
         {!loading && !error && forecast && (

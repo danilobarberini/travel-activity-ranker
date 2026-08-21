@@ -24,7 +24,7 @@ describe('OutdoorSightseeingScorer', () => {
 
   it('flags extreme heat', () => {
     const result = scorer.score(buildDay({ temperatureMaxC: 40 }));
-    expect(result.reasoning).toContain('Temperatura extrema');
+    expect(result.reasoning).toContain('Extreme temperature');
   });
 
   it('penalizes strong wind', () => {
