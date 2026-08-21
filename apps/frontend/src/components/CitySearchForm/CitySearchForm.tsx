@@ -6,6 +6,9 @@ interface CitySearchFormProps {
   isLoading: boolean;
 }
 
+// Matches the backend's MAX_LOCATION_LENGTH (forecast.resolver.ts).
+const MAX_CITY_LENGTH = 100;
+
 export function CitySearchForm({ onSearch, isLoading }: CitySearchFormProps) {
   const [city, setCity] = useState('');
   const trimmedCity = city.trim();
@@ -32,6 +35,7 @@ export function CitySearchForm({ onSearch, isLoading }: CitySearchFormProps) {
           placeholder="e.g. Lisbon"
           disabled={isLoading}
           autoComplete="off"
+          maxLength={MAX_CITY_LENGTH}
         />
         <button
           type="submit"
