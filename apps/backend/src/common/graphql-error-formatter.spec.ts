@@ -37,6 +37,23 @@ describe('formatGraphQLError', () => {
     expect(result.extensions?.code).toBe('BAD_USER_INPUT');
   });
 
+  it("maps the status from BadRequestException's real shape, where it only appears nested in originalError.statusCode, not at the top level", () => {
+    const result = formatGraphQLError(
+      buildError({
+        extensions: {
+          code: 'BAD_REQUEST',
+          originalError: {
+            message: 'location must not be empty.',
+            error: 'Bad Request',
+            statusCode: 400,
+          },
+        },
+      }),
+    );
+
+    expect(result.extensions?.code).toBe('BAD_USER_INPUT');
+  });
+
   it('maps a 502 status to a BAD_GATEWAY code', () => {
     const result = formatGraphQLError(
       buildError({

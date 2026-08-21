@@ -80,11 +80,19 @@ apps/
 
 **Scoring thresholds read through a typed getter, not direct imports.** `getScoringParameters(activity)` is the only way scorers read their thresholds. It's a deliberate seam: if thresholds ever need to move to a database instead of being hardcoded, this is the one function whose signature has to change.
 
+**NestJS as the backend framework.** Chosen for familiarity and its ecosystem — `@nestjs/apollo`, `@nestjs/config`, `@nestjs/throttler`, and `@nestjs/axios` all plug directly into the framework's DI system, so adding things like config loading or rate limiting later was a few lines of wiring instead of assembling each piece by hand.
+
 **Apollo Server for GraphQL.** Apollo is the more prevalent choice, and NestJS already ships a dedicated wrapper for it (`@nestjs/apollo`) built for code-first GraphQL. It also keeps the stack on one ecosystem — Apollo Server on the backend, Apollo Client on the frontend — one mental model and one set of docs, useful on a first GraphQL project.
 
 **GraphQL Codegen with `client-preset`, after `typescript-react-apollo` broke on Apollo Client v4.** I first tried the hooks-generating plugin most tutorials use, but it only supports Apollo Client v2/v3, so I switched to `client-preset`, which is version-agnostic. Worth being honest: for a project this size (one query), hand-writing the query and its types would have been simpler and would have sidestepped the whole issue — I kept Codegen for the compiler-enforced type sync between frontend and backend, which matters more as queries are added.
 
 **Docker Compose with two stateless services, no database.** Both backend and frontend use multi-stage Dockerfiles; the frontend's production stage serves the Vite build as static files through nginx, so it doesn't need a Node runtime at runtime. The build context for both is the monorepo root, since npm workspaces need the root lockfile to resolve dependencies correctly.
+
+**API hardening pass: rate limiting, request timeouts, and input validation.** A review pass surfaced these as real gaps, so I added three targeted fixes: `@nestjs/throttler` limits `cityForecast` to 20 requests/minute per IP (verified live — the 21st request in a 60s window gets rejected with a `RATE_LIMITED` error); `HttpModule` now times out Open-Meteo requests after 5s instead of hanging indefinitely; and the resolver rejects empty or over-100-character city names before they reach geocoding. Wiring the rate limiter also surfaced a real bug in `formatGraphQLError`: it only read `extensions.status` at the top level, which works for `NotFoundException` but not `BadRequestException` (whose status is nested in `extensions.originalError.statusCode` instead) — caught by testing the actual error shape live rather than trusting the existing unit tests, which had only ever exercised hand-crafted mocks already in the shape that happened to work.
+
+**Apollo Client's default cache, no custom cache policy on the frontend.** Repeating a search for the same city is served instantly from cache instead of a network round-trip. That's fine here — weather data doesn't meaningfully change within a browsing session, and a search for a different city always fires a real request regardless.
+
+**Custom drag-to-scroll for the day-card carousel, mouse-only.** `useDragScroll` only listens for mouse events; touch devices already get native horizontal scrolling on the same `overflow-x: auto` container without any extra code — verified at a 375px mobile viewport with no layout breakage.
 
 ## Testing
 
@@ -119,8 +127,6 @@ Every commit message and PR description in this repo's history was drafted by Cl
 **No browser-level end-to-end tests.** The full stack was verified manually against the running Docker Compose setup (built both containers, ran a real search through the browser), but there's no Cypress/Playwright suite automating that. For the current scope, backend e2e tests plus a frontend integration suite cover the meaningful wiring risk; a full browser e2e suite would mostly be testing Docker networking and nginx config, not application logic.
 
 **No caching of Open-Meteo responses.** Every search re-fetches geocoding, forecast, and marine data, even for a repeated query. Fine for this project's traffic, but a real product would cache by city/day to reduce latency and avoid hitting Open-Meteo's rate limits under load.
-
-**No rate limiting or abuse protection on the API.** `cityForecast` has no request throttling, authentication, or input size limits, so nothing stops it from being hammered, whether that runs up usage against Open-Meteo on my behalf or just overloads the backend. Acceptable for a take-home; not something I'd ship to production as-is.
 
 **No CI pipeline.** Tests and linting run locally on demand, not automatically on every push or PR.
 

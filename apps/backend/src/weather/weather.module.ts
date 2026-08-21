@@ -6,7 +6,9 @@ import { OpenMeteoLocationProvider } from './providers/open-meteo-location.provi
 import { OpenMeteoWeatherProvider } from './providers/open-meteo-weather.provider';
 
 @Module({
-  imports: [HttpModule],
+  // Axios has no default timeout, so an unresponsive Open-Meteo would hang
+  // the request indefinitely without this.
+  imports: [HttpModule.register({ timeout: 5000 })],
   providers: [
     { provide: LOCATION_PROVIDER, useClass: OpenMeteoLocationProvider },
     { provide: WEATHER_PROVIDER, useClass: OpenMeteoWeatherProvider },
