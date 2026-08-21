@@ -14,6 +14,7 @@ export const CITY_FORECAST_QUERY = graphql(`
           temperatureMaxC
           temperatureMinC
           precipitationSumMm
+          snowfallSumCm
         }
         activities {
           activity

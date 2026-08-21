@@ -14,10 +14,10 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-    "\n  query CityForecast($location: String!) {\n    cityForecast(location: $location) {\n      location {\n        name\n        country\n        admin1\n      }\n      days {\n        date\n        weather {\n          temperatureMaxC\n          temperatureMinC\n          precipitationSumMm\n        }\n        activities {\n          activity\n          score\n          reasoning\n        }\n      }\n    }\n  }\n": typeof types.CityForecastDocument,
+    "\n  query CityForecast($location: String!) {\n    cityForecast(location: $location) {\n      location {\n        name\n        country\n        admin1\n      }\n      days {\n        date\n        weather {\n          temperatureMaxC\n          temperatureMinC\n          precipitationSumMm\n          snowfallSumCm\n        }\n        activities {\n          activity\n          score\n          reasoning\n        }\n      }\n    }\n  }\n": typeof types.CityForecastDocument,
 };
 const documents: Documents = {
-    "\n  query CityForecast($location: String!) {\n    cityForecast(location: $location) {\n      location {\n        name\n        country\n        admin1\n      }\n      days {\n        date\n        weather {\n          temperatureMaxC\n          temperatureMinC\n          precipitationSumMm\n        }\n        activities {\n          activity\n          score\n          reasoning\n        }\n      }\n    }\n  }\n": types.CityForecastDocument,
+    "\n  query CityForecast($location: String!) {\n    cityForecast(location: $location) {\n      location {\n        name\n        country\n        admin1\n      }\n      days {\n        date\n        weather {\n          temperatureMaxC\n          temperatureMinC\n          precipitationSumMm\n          snowfallSumCm\n        }\n        activities {\n          activity\n          score\n          reasoning\n        }\n      }\n    }\n  }\n": types.CityForecastDocument,
 };
 
 /**
@@ -37,7 +37,7 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query CityForecast($location: String!) {\n    cityForecast(location: $location) {\n      location {\n        name\n        country\n        admin1\n      }\n      days {\n        date\n        weather {\n          temperatureMaxC\n          temperatureMinC\n          precipitationSumMm\n        }\n        activities {\n          activity\n          score\n          reasoning\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query CityForecast($location: String!) {\n    cityForecast(location: $location) {\n      location {\n        name\n        country\n        admin1\n      }\n      days {\n        date\n        weather {\n          temperatureMaxC\n          temperatureMinC\n          precipitationSumMm\n        }\n        activities {\n          activity\n          score\n          reasoning\n        }\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query CityForecast($location: String!) {\n    cityForecast(location: $location) {\n      location {\n        name\n        country\n        admin1\n      }\n      days {\n        date\n        weather {\n          temperatureMaxC\n          temperatureMinC\n          precipitationSumMm\n          snowfallSumCm\n        }\n        activities {\n          activity\n          score\n          reasoning\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query CityForecast($location: String!) {\n    cityForecast(location: $location) {\n      location {\n        name\n        country\n        admin1\n      }\n      days {\n        date\n        weather {\n          temperatureMaxC\n          temperatureMinC\n          precipitationSumMm\n          snowfallSumCm\n        }\n        activities {\n          activity\n          score\n          reasoning\n        }\n      }\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
