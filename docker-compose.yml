@@ -1,0 +1,21 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      PORT: 3000
+      CORS_ORIGIN: http://localhost:5174
+
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile
+      args:
+        VITE_GRAPHQL_URI: http://localhost:3000/graphql
+    ports:
+      - '5174:80'
+    depends_on:
+      - backend

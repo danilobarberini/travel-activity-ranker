@@ -7,7 +7,7 @@ describe('SurfingScorer', () => {
   it('returns null instead of a fabricated score when there is no wave data', () => {
     const result = scorer.score(buildDay({ waveHeightMaxM: null }));
     expect(result.score).toBeNull();
-    expect(result.reasoning[0]).toMatch(/sem dados/i);
+    expect(result.reasoning[0]).toMatch(/no wave data/i);
   });
 
   it('scores a good-sized, well-organized swell highly', () => {

@@ -12,7 +12,7 @@ describe('IndoorSightseeingScorer', () => {
   it('is not simply the inverse of the outdoor score — mild rain does not boost it', () => {
     const result = scorer.score(buildDay({ precipitationSumMm: 8 }));
     expect(result.score).toBe(85);
-    expect(result.reasoning.some((r) => r.includes('fugir da chuva'))).toBe(
+    expect(result.reasoning.some((r) => r.includes('escape the rain'))).toBe(
       true,
     );
   });

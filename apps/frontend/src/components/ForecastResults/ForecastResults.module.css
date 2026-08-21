@@ -1,0 +1,21 @@
+.results {
+  display: flex;
+  flex-direction: column;
+}
+
+.locationHeader {
+  margin-bottom: 16px;
+}
+
+.daysList {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  cursor: grab;
+  user-select: none;
+}
+
+.daysList:active {
+  cursor: grabbing;
+}

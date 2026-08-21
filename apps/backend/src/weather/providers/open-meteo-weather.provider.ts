@@ -105,9 +105,10 @@ export class OpenMeteoWeatherProvider implements WeatherProvider {
       this.fetchMarineDaily(latitude, longitude, days),
     ]);
 
-    // Marine and forecast are two different Open-Meteo models: they can snap to
-    // slightly different grid points internally, so merge by date instead of
-    // assuming both arrays share the same length/order.
+    // Forecast and marine are different weather models, and each one rounds the
+    // coordinates we send to its own nearest data point internally — so for the
+    // same city, they might not return the exact same set of dates. Merge by
+    // date instead of assuming the two arrays line up.
     const marineIndexByDate = new Map(
       marine.time.map((date, index) => [date, index]),
     );
@@ -127,12 +128,8 @@ export class OpenMeteoWeatherProvider implements WeatherProvider {
         weatherCode: requireDailyNumber('weather_code'),
         sunshineDurationSeconds: requireDailyNumber('sunshine_duration'),
         uvIndexMax: requireDailyNumber('uv_index_max'),
-        // `null` here means "no wave data for this day" — it's the normal Open-Meteo
-        // response for inland coordinates (HTTP 200, not an error) and can also happen
-        // on individual days at a real coastal point. See the interface doc comment;
-        // callers (e.g. the surf scorer) must treat this as "insufficient data for this
-        // day", never as a city-level "not coastal" verdict. Unlike the forecast fields
-        // above, we intentionally do NOT require a finite number here.
+        // Intentionally no requireFiniteNumber() here — null is valid, see the
+        // waveHeightMaxM doc comment on NormalizedDailyWeather for why.
         waveHeightMaxM:
           marineIndex !== undefined
             ? marine.wave_height_max[marineIndex]

@@ -14,12 +14,11 @@ export class SurfingScorer implements ActivityScorer {
 
   score(day: NormalizedDailyWeather): ScoreResult {
     // See NormalizedDailyWeather's doc comment: null means no wave data for this day
-    // (inland location, or a genuinely coastal point with a data gap) — never fabricate
-    // a number here.
+    // (inland location, or a genuinely coastal point with a data gap)
     if (day.waveHeightMaxM === null) {
       return {
         score: null,
-        reasoning: ['Sem dados de ondas disponíveis para esta localização/dia'],
+        reasoning: ['No wave data available for this location/day'],
       };
     }
 
@@ -39,33 +38,29 @@ export class SurfingScorer implements ActivityScorer {
 
     if (waveHeight < FLAT_MAX_M) {
       score -= 60;
-      reasoning.push(`Mar quase sem ondulação (${waveHeight}m)`);
+      reasoning.push(`Nearly flat sea (${waveHeight}m)`);
     } else if (waveHeight < SMALL_MAX_M) {
       score -= 25;
-      reasoning.push(`Ondulação pequena (${waveHeight}m)`);
+      reasoning.push(`Small swell (${waveHeight}m)`);
     } else if (waveHeight <= GOOD_MAX_M) {
-      reasoning.push(`Altura de onda numa faixa boa (${waveHeight}m)`);
+      reasoning.push(`Wave height in a good range (${waveHeight}m)`);
     } else if (waveHeight <= BIG_MAX_M) {
       score -= 20;
-      reasoning.push(
-        `Ondas grandes, para surfistas experientes (${waveHeight}m)`,
-      );
+      reasoning.push(`Big waves, for experienced surfers (${waveHeight}m)`);
     } else {
       score -= 50;
-      reasoning.push(
-        `Ondas muito grandes para a maioria dos surfistas (${waveHeight}m)`,
-      );
+      reasoning.push(`Waves too big for most surfers (${waveHeight}m)`);
     }
 
     if (day.wavePeriodMaxS !== null) {
       if (day.wavePeriodMaxS >= LONG_PERIOD_S) {
         reasoning.push(
-          `Período de onda longo, indicando swell bem formado (${day.wavePeriodMaxS}s)`,
+          `Long wave period, indicating a well-formed swell (${day.wavePeriodMaxS}s)`,
         );
       } else if (day.wavePeriodMaxS < SHORT_PERIOD_S) {
         score -= 15;
         reasoning.push(
-          `Período de onda curto, mar mais bagunçado (${day.wavePeriodMaxS}s)`,
+          `Short wave period, choppier sea (${day.wavePeriodMaxS}s)`,
         );
       }
     }
@@ -73,7 +68,7 @@ export class SurfingScorer implements ActivityScorer {
     if (day.windSpeedMaxKmh > STRONG_WIND_KMH) {
       score -= 15;
       reasoning.push(
-        `Vento forte pode prejudicar a qualidade das ondas (${day.windSpeedMaxKmh} km/h)`,
+        `Strong wind can hurt wave quality (${day.windSpeedMaxKmh} km/h)`,
       );
     }
 
