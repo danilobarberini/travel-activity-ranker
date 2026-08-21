@@ -142,7 +142,7 @@ describe('App (integration)', () => {
         },
         // Simulates the link/fetch layer failing entirely (backend down, CORS
         // blocked, offline) — the raw error is a browser-level "Failed to
-        // fetch", which a user should never see verbatim.
+        // fetch", which a user should never see.
         error: new TypeError('Failed to fetch'),
       },
     ];
