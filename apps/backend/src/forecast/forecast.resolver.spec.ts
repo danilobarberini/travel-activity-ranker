@@ -1,4 +1,4 @@
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { ForecastResolver } from './forecast.resolver';
 import { LocationProvider } from '../weather/interfaces/location-provider.interface';
 import { WeatherProvider } from '../weather/interfaces/weather-provider.interface';
@@ -98,5 +98,31 @@ describe('ForecastResolver', () => {
     await expect(resolver.cityForecast('asdkfjasldkjf')).rejects.toThrow(
       NotFoundException,
     );
+  });
+
+  it('throws BadRequestException for an empty or whitespace-only location', async () => {
+    const resolver = buildResolver({});
+
+    await expect(resolver.cityForecast('   ')).rejects.toThrow(
+      BadRequestException,
+    );
+  });
+
+  it('throws BadRequestException for a location over 100 characters', async () => {
+    const resolver = buildResolver({});
+
+    await expect(resolver.cityForecast('a'.repeat(101))).rejects.toThrow(
+      BadRequestException,
+    );
+  });
+
+  it('trims the location before searching', async () => {
+    const findByName = jest.fn().mockResolvedValue([]);
+    const resolver = buildResolver({ findByName });
+
+    await expect(resolver.cityForecast('  Lisbon  ')).rejects.toThrow(
+      NotFoundException,
+    );
+    expect(findByName).toHaveBeenCalledWith('Lisbon', 1);
   });
 });
