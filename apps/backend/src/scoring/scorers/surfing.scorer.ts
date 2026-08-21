@@ -14,8 +14,7 @@ export class SurfingScorer implements ActivityScorer {
 
   score(day: NormalizedDailyWeather): ScoreResult {
     // See NormalizedDailyWeather's doc comment: null means no wave data for this day
-    // (inland location, or a genuinely coastal point with a data gap) — never fabricate
-    // a number here.
+    // (inland location, or a genuinely coastal point with a data gap)
     if (day.waveHeightMaxM === null) {
       return {
         score: null,

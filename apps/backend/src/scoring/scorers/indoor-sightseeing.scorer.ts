@@ -24,8 +24,7 @@ export class IndoorSightseeingScorer implements ActivityScorer {
 
     // Deliberately NOT the inverse of the outdoor score: a museum is fine on a mildly
     // rainy day, but a severe storm is a bad day for every activity, indoor included
-    // (getting there becomes the problem). High stable baseline, only extreme weather
-    // deducts.
+    // High stable baseline, only extreme weather deducts.
     let score = BASELINE_SCORE;
     const reasoning: string[] = ['Passeios indoor dependem pouco do clima'];
 

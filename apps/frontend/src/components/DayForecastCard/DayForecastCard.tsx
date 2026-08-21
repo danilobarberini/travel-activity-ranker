@@ -16,10 +16,8 @@ interface DayForecastCardProps {
   activities: ActivityScoreEntry[];
 }
 
-// A plain ' ' collapses to zero height in an empty <p> (browsers trim
-// whitespace-only text nodes) — a non-breaking space is real rendered content,
-// so it reliably keeps the placeholder row's height equal to its populated
-// sibling rows.
+// Non-breaking space, not a plain ' ' — browsers collapse whitespace-only
+// text nodes to zero height, which broke this row's placeholder alignment.
 const PLACEHOLDER_TEXT = ' ';
 
 function formatWeekday(dateStr: string): string {

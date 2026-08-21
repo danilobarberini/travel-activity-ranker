@@ -121,8 +121,6 @@ describe('Forecast GraphQL (integration)', () => {
           country: 'Brasil',
         });
         expect(forecast?.days).toHaveLength(1);
-        // 4 real scorers ran for real, not stubs — this is what a unit test
-        // mocking RankingService could never confirm.
         const activities = forecast?.days[0].activities ?? [];
         expect(activities).toHaveLength(4);
         expect(activities.map((a) => a.activity).sort()).toEqual(
