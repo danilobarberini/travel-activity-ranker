@@ -9,16 +9,16 @@ export interface ScoreTier {
  */
 export function getScoreTier(score: number | null): ScoreTier {
   if (score === null) {
-    return { label: 'Sem dados', className: 'unavailable' };
+    return { label: 'No data', className: 'unavailable' };
   }
   if (score >= 80) {
-    return { label: 'Ótimo', className: 'excellent' };
+    return { label: 'Excellent', className: 'excellent' };
   }
   if (score >= 60) {
-    return { label: 'Bom', className: 'good' };
+    return { label: 'Good', className: 'good' };
   }
   if (score >= 40) {
-    return { label: 'Regular', className: 'fair' };
+    return { label: 'Fair', className: 'fair' };
   }
-  return { label: 'Ruim', className: 'poor' };
+  return { label: 'Poor', className: 'poor' };
 }

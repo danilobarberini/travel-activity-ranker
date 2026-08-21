@@ -27,34 +27,34 @@ export class SkiingScorer implements ActivityScorer {
     if (day.temperatureMaxC > SNOW_MELT_WARNING_TEMP_C) {
       score -= 60;
       reasoning.push(
-        `Muito quente para a neve se manter (máx ${day.temperatureMaxC}°C)`,
+        `Too warm for snow to hold (high of ${day.temperatureMaxC}°C)`,
       );
     } else if (day.temperatureMaxC > SNOW_SAFE_MAX_TEMP_C) {
       score -= 25;
       reasoning.push(
-        `Temperatura no limite para a neve derreter (máx ${day.temperatureMaxC}°C)`,
+        `Borderline temperature for snow melt (high of ${day.temperatureMaxC}°C)`,
       );
     } else {
       reasoning.push(
-        `Frio o suficiente para manter a neve (máx ${day.temperatureMaxC}°C)`,
+        `Cold enough to keep the snow (high of ${day.temperatureMaxC}°C)`,
       );
     }
 
     if (day.snowfallSumCm > 0) {
-      reasoning.push(`Queda de neve prevista (${day.snowfallSumCm}cm)`);
+      reasoning.push(`Snowfall expected (${day.snowfallSumCm}cm)`);
     } else {
       score -= 15;
-      reasoning.push('Sem neve nova prevista');
+      reasoning.push('No fresh snow expected');
     }
 
     if (day.windSpeedMaxKmh > STRONG_WIND_KMH) {
       score -= 30;
       reasoning.push(
-        `Vento muito forte, risco de fechamento de teleférico (${day.windSpeedMaxKmh} km/h)`,
+        `Very strong wind, risk of lift closures (${day.windSpeedMaxKmh} km/h)`,
       );
     } else if (day.windSpeedMaxKmh > MODERATE_WIND_KMH) {
       score -= 10;
-      reasoning.push(`Vento moderado (${day.windSpeedMaxKmh} km/h)`);
+      reasoning.push(`Moderate wind (${day.windSpeedMaxKmh} km/h)`);
     }
 
     if (
@@ -62,7 +62,7 @@ export class SkiingScorer implements ActivityScorer {
       day.temperatureMaxC > SNOW_SAFE_MAX_TEMP_C
     ) {
       score -= 20;
-      reasoning.push('Chuva sobre neve prejudica as condições');
+      reasoning.push('Rain on snow hurts conditions');
     }
 
     return { score: clampScore(score), reasoning };

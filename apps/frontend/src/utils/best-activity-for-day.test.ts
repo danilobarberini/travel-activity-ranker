@@ -5,7 +5,7 @@ describe('getBestActivityForDay', () => {
   it('picks the highest-scoring activity', () => {
     const result = getBestActivityForDay([
       { activity: 'SKIING', score: 25, reasoning: [] },
-      { activity: 'SURFING', score: 85, reasoning: ['Boa ondulação'] },
+      { activity: 'SURFING', score: 85, reasoning: ['Good swell'] },
       { activity: 'OUTDOOR_SIGHTSEEING', score: 60, reasoning: [] },
       { activity: 'INDOOR_SIGHTSEEING', score: 85 - 1, reasoning: [] },
     ]);
@@ -16,7 +16,7 @@ describe('getBestActivityForDay', () => {
 
   it('ignores null scores when picking the best', () => {
     const result = getBestActivityForDay([
-      { activity: 'SURFING', score: null, reasoning: ['Sem dados de ondas'] },
+      { activity: 'SURFING', score: null, reasoning: ['No wave data'] },
       { activity: 'SKIING', score: 25, reasoning: [] },
     ]);
 

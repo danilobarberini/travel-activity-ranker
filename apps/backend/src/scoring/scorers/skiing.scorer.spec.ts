@@ -21,7 +21,7 @@ describe('SkiingScorer', () => {
       buildDay({ temperatureMaxC: 22, snowfallSumCm: 0 }),
     );
     expect(result.score!).toBeLessThan(30);
-    expect(result.reasoning.some((r) => r.includes('quente'))).toBe(true);
+    expect(result.reasoning.some((r) => r.includes('warm'))).toBe(true);
   });
 
   it('penalizes strong wind even on an otherwise good day', () => {
@@ -42,9 +42,7 @@ describe('SkiingScorer', () => {
         precipitationSumMm: 20,
       }),
     );
-    expect(result.reasoning.some((r) => r.includes('Chuva sobre neve'))).toBe(
-      true,
-    );
+    expect(result.reasoning.some((r) => r.includes('Rain on snow'))).toBe(true);
   });
 
   it('never returns a score outside the 0-100 range', () => {

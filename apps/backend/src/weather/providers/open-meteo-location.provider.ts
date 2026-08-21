@@ -25,7 +25,7 @@ export class OpenMeteoLocationProvider implements LocationProvider {
   async findByName(query: string, limit = 5): Promise<NormalizedLocation[]> {
     const { data } = await firstValueFrom(
       this.http.get<RawGeocodingResponse>(`${GEOCODING_BASE_URL}/search`, {
-        params: { name: query, count: limit, language: 'pt', format: 'json' },
+        params: { name: query, count: limit, language: 'en', format: 'json' },
       }),
     );
 

@@ -8,13 +8,13 @@ describe('CitySearchForm', () => {
     const user = userEvent.setup();
     render(<CitySearchForm onSearch={vi.fn()} isLoading={false} />);
 
-    const button = screen.getByRole('button', { name: /buscar/i });
+    const button = screen.getByRole('button', { name: /search/i });
     expect(button).toBeDisabled();
 
-    await user.type(screen.getByLabelText(/cidade/i), '   ');
+    await user.type(screen.getByLabelText(/city/i), '   ');
     expect(button).toBeDisabled();
 
-    await user.type(screen.getByLabelText(/cidade/i), 'Florianópolis');
+    await user.type(screen.getByLabelText(/city/i), 'Florianópolis');
     expect(button).toBeEnabled();
   });
 
@@ -23,8 +23,8 @@ describe('CitySearchForm', () => {
     const onSearch = vi.fn();
     render(<CitySearchForm onSearch={onSearch} isLoading={false} />);
 
-    await user.type(screen.getByLabelText(/cidade/i), '  Florianópolis  ');
-    await user.click(screen.getByRole('button', { name: /buscar/i }));
+    await user.type(screen.getByLabelText(/city/i), '  Florianópolis  ');
+    await user.click(screen.getByRole('button', { name: /search/i }));
 
     expect(onSearch).toHaveBeenCalledWith('Florianópolis');
     expect(onSearch).toHaveBeenCalledTimes(1);
@@ -33,7 +33,7 @@ describe('CitySearchForm', () => {
   it('disables the input and shows a loading label while isLoading is true', () => {
     render(<CitySearchForm onSearch={vi.fn()} isLoading={true} />);
 
-    expect(screen.getByLabelText(/cidade/i)).toBeDisabled();
-    expect(screen.getByRole('button', { name: /buscando/i })).toBeDisabled();
+    expect(screen.getByLabelText(/city/i)).toBeDisabled();
+    expect(screen.getByRole('button', { name: /searching/i })).toBeDisabled();
   });
 });

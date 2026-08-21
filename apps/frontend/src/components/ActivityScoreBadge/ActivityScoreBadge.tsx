@@ -29,7 +29,7 @@ export function ActivityScoreBadge({
             className={styles.infoButton}
             aria-describedby={tooltipId}
           >
-            i<span className={styles.srOnly}>Por que essa nota?</span>
+            i<span className={styles.srOnly}>Why this score?</span>
           </button>
           <span id={tooltipId} role="tooltip" className={styles.tooltip}>
             {reasoning.join(' ')}

@@ -26,9 +26,7 @@ export class ForecastResolver {
   ): Promise<CityForecastType> {
     const [match] = await this.locationProvider.findByName(location, 1);
     if (!match) {
-      throw new NotFoundException(
-        `Nenhuma cidade encontrada para "${location}".`,
-      );
+      throw new NotFoundException(`No city found for "${location}".`);
     }
 
     const days = await this.weatherProvider.getDailyForecast(

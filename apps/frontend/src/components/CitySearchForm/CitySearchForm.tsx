@@ -20,7 +20,7 @@ export function CitySearchForm({ onSearch, isLoading }: CitySearchFormProps) {
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <label htmlFor="city-input" className={styles.label}>
-        Cidade
+        City
       </label>
       <div className={styles.row}>
         <input
@@ -29,7 +29,7 @@ export function CitySearchForm({ onSearch, isLoading }: CitySearchFormProps) {
           className={styles.input}
           value={city}
           onChange={(event) => setCity(event.target.value)}
-          placeholder="Ex.: Florianópolis"
+          placeholder="e.g. Lisbon"
           disabled={isLoading}
           autoComplete="off"
         />
@@ -38,7 +38,7 @@ export function CitySearchForm({ onSearch, isLoading }: CitySearchFormProps) {
           className={styles.button}
           disabled={isLoading || !trimmedCity}
         >
-          {isLoading ? 'Buscando…' : 'Buscar'}
+          {isLoading ? 'Searching…' : 'Search'}
         </button>
       </div>
     </form>

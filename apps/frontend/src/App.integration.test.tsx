@@ -19,7 +19,7 @@ const mockForecastData = {
     location: {
       __typename: 'LocationType' as const,
       name: 'Florianópolis',
-      country: 'Brasil',
+      country: 'Brazil',
       admin1: 'Santa Catarina',
     },
     days: [
@@ -38,25 +38,25 @@ const mockForecastData = {
             __typename: 'ActivityScoreType' as const,
             activity: 'SKIING' as const,
             score: 25,
-            reasoning: ['Muito quente'],
+            reasoning: ['Too warm'],
           },
           {
             __typename: 'ActivityScoreType' as const,
             activity: 'SURFING' as const,
             score: 75,
-            reasoning: ['Ondulação pequena'],
+            reasoning: ['Small swell'],
           },
           {
             __typename: 'ActivityScoreType' as const,
             activity: 'OUTDOOR_SIGHTSEEING' as const,
             score: 100,
-            reasoning: ['Bastante sol ao longo do dia'],
+            reasoning: ['Plenty of sunshine throughout the day'],
           },
           {
             __typename: 'ActivityScoreType' as const,
             activity: 'INDOOR_SIGHTSEEING' as const,
             score: 85,
-            reasoning: ['Passeios indoor dependem pouco do clima'],
+            reasoning: ['Indoor activities depend little on the weather'],
           },
         ],
       },
@@ -83,18 +83,18 @@ describe('App (integration)', () => {
       </MockedProvider>,
     );
 
-    await user.type(screen.getByLabelText(/cidade/i), 'Florianópolis');
-    await user.click(screen.getByRole('button', { name: /buscar/i }));
+    await user.type(screen.getByLabelText(/city/i), 'Florianópolis');
+    await user.click(screen.getByRole('button', { name: /search/i }));
 
     await waitFor(() => {
-      expect(screen.getByText('Florianópolis, Brasil')).toBeInTheDocument();
+      expect(screen.getByText('Florianópolis, Brazil')).toBeInTheDocument();
     });
 
     // Outdoor sightseeing scored highest (100) — it should be the highlighted
-    // "Recomendado" pick AND appear again in the badge list below, proving
+    // "Recommended" pick AND appear again in the badge list below, proving
     // the real getBestActivityForDay ran on data that came from the (mocked)
     // network, not from a stub.
-    expect(screen.getAllByText('Passeios ao ar livre')).toHaveLength(2);
+    expect(screen.getAllByText('Outdoor sightseeing')).toHaveLength(2);
     expect(screen.getByText('100')).toBeInTheDocument();
   });
 
@@ -104,14 +104,12 @@ describe('App (integration)', () => {
       {
         request: {
           query: CITY_FORECAST_QUERY,
-          variables: { location: 'Cidade Inexistente' },
+          variables: { location: 'Nonexistent City' },
         },
         // A GraphQL response with an `errors` array — what the real backend
         // sends back for a NotFoundException, formatted by formatGraphQLError.
         result: {
-          errors: [
-            { message: 'Nenhuma cidade encontrada para "Cidade Inexistente".' },
-          ],
+          errors: [{ message: 'No city found for "Nonexistent City".' }],
         },
       },
     ];
@@ -122,13 +120,11 @@ describe('App (integration)', () => {
       </MockedProvider>,
     );
 
-    await user.type(screen.getByLabelText(/cidade/i), 'Cidade Inexistente');
-    await user.click(screen.getByRole('button', { name: /buscar/i }));
+    await user.type(screen.getByLabelText(/city/i), 'Nonexistent City');
+    await user.click(screen.getByRole('button', { name: /search/i }));
 
     await waitFor(() => {
-      expect(screen.getByRole('alert')).toHaveTextContent(
-        /nenhuma cidade encontrada/i,
-      );
+      expect(screen.getByRole('alert')).toHaveTextContent(/no city found/i);
     });
   });
 
@@ -153,12 +149,12 @@ describe('App (integration)', () => {
       </MockedProvider>,
     );
 
-    await user.type(screen.getByLabelText(/cidade/i), 'Florianopolis');
-    await user.click(screen.getByRole('button', { name: /buscar/i }));
+    await user.type(screen.getByLabelText(/city/i), 'Florianopolis');
+    await user.click(screen.getByRole('button', { name: /search/i }));
 
     await waitFor(() => {
       const alert = screen.getByRole('alert');
-      expect(alert).toHaveTextContent(/não foi possível conectar/i);
+      expect(alert).toHaveTextContent(/could not connect/i);
       expect(alert).not.toHaveTextContent(/failed to fetch/i);
     });
   });

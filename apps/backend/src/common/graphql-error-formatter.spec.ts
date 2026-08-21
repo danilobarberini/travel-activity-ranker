@@ -65,12 +65,12 @@ describe('formatGraphQLError', () => {
   it('preserves the message and path', () => {
     const result = formatGraphQLError(
       buildError({
-        message: 'Nenhuma cidade encontrada.',
+        message: 'No city found.',
         path: ['cityForecast'],
       }),
     );
 
-    expect(result.message).toBe('Nenhuma cidade encontrada.');
+    expect(result.message).toBe('No city found.');
     expect(result.path).toEqual(['cityForecast']);
   });
 });

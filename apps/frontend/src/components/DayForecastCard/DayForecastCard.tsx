@@ -22,12 +22,12 @@ const PLACEHOLDER_TEXT = ' ';
 
 function formatWeekday(dateStr: string): string {
   const date = new Date(`${dateStr}T00:00:00`);
-  return date.toLocaleDateString('pt-BR', { weekday: 'short' });
+  return date.toLocaleDateString('en-US', { weekday: 'short' });
 }
 
 function formatDayMonth(dateStr: string): string {
   const date = new Date(`${dateStr}T00:00:00`);
-  return date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+  return date.toLocaleDateString('en-US', { day: '2-digit', month: '2-digit' });
 }
 
 function formatPrecipitation(
@@ -35,8 +35,8 @@ function formatPrecipitation(
   snowfallSumCm: number,
 ): string | null {
   const parts: string[] = [];
-  if (precipitationSumMm > 0) parts.push(`${precipitationSumMm}mm de chuva`);
-  if (snowfallSumCm > 0) parts.push(`${snowfallSumCm}cm de neve`);
+  if (precipitationSumMm > 0) parts.push(`${precipitationSumMm}mm rain`);
+  if (snowfallSumCm > 0) parts.push(`${snowfallSumCm}cm snow`);
   return parts.length > 0 ? parts.join(' · ') : null;
 }
 
@@ -64,13 +64,13 @@ export function DayForecastCard({
         <p className={styles.dayMonth}>{formatDayMonth(date)}</p>
       </header>
 
-      <p className={styles.sectionLabel}>Recomendado</p>
+      <p className={styles.sectionLabel}>Recommended</p>
 
       {/*
         Every row below is always rendered — when a piece of info doesn't apply
         (no rain/snow, no reasoning), it renders invisible (`visibility: hidden`)
         instead of being omitted. Combined with a reserved 2-line height on the
-        activity name (long names like "Passeios ao ar livre" can wrap on some
+        activity name (long names like "Outdoor sightseeing" can wrap on some
         days and not others), that's what keeps every row's position fixed
         across all 7 cards without resorting to CSS `position` tricks.
       */}
@@ -98,7 +98,7 @@ export function DayForecastCard({
         </p>
       </div>
 
-      <p className={styles.sectionLabel}>Todas as atividades</p>
+      <p className={styles.sectionLabel}>All activities</p>
 
       <div className={styles.allScores}>
         {activities.map((activity) => (
